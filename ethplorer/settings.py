@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'indexer',
 ]
 
 MIDDLEWARE = [
@@ -123,3 +124,14 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Web3 settings
+
+WEB3_PROVIDER = ''
+
+
+try:
+    from .local_settings import *
+except ImportError:
+    print('no local settings found')
