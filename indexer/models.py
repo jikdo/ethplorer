@@ -14,7 +14,7 @@ class Block(models.Model):
     gas_limit = models.IntegerField()
     gas_used = models.IntegerField()
     logs_bloom = models.TextField()
-    miner = models.CharField(max_length=42)
+    miner = models.ForeignKey('Account', related_name="mined_blocks", on_delete=models.CASCADE)
     nonce = models.CharField(max_length=50)
     number = models.BigIntegerField()
     parent_hash = models.CharField(max_length=150)
@@ -39,14 +39,14 @@ class Transaction(models.Model):
     hash = models.CharField(max_length=150)
     block_hash = models.CharField(max_length=150)
     block_number = models.BigIntegerField()
-    from_address = models.CharField(max_length=150)
+    from_address = models.ForeignKey('Account', related_name='from_transactions', on_delete=models.CASCADE)
     gas = models.BigIntegerField()
     gas_price = models.BigIntegerField()
     input = models.CharField(max_length=150)
     max_fee_per_gas = models.BigIntegerField()
     max_priority_fee_per_gas = models.BigIntegerField()
     nonce = models.IntegerField()
-    to_address = models.CharField(max_length=150)
+    to_address = models.ForeignKey('Account', related_name='to_transactions', on_delete=models.CASCADE)
     transaction_index = models.IntegerField()
     value = models.BigIntegerField()
 
@@ -55,8 +55,16 @@ class Transaction(models.Model):
 
 
 class Account(models.Model):
-    pass
+    """
+    Represents an ethereum account
+    """
+    ACCOUNT_TYPE_CHOICES = (
+        ('EOA', 'Externally Owned Account'),
+        ('Contract', 'Contract')
+    )
 
+    hash = models.CharField(max_length=45, help_text="account address")
+    account_type = models.CharField(max_length=45)
 
-class Contract(models.Model):
-    pass
+    def __str__(self) -> str:
+        return f'{self.hash} ({self.account_type})'
