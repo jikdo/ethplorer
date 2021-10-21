@@ -58,5 +58,5 @@ class Account(models.Model):
     pass
 
 
-class TokenContract(models.Model):
+class Contract(models.Model):
     pass

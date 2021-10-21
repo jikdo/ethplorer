@@ -1,6 +1,9 @@
 from django.db import models
 
 
+def validate_field(value):
+    pass
+
 class BiggerIntegerField(models.CharField):
     description = "Any integer that can't fit in BigIntegerField"
 
@@ -18,3 +21,5 @@ class BiggerIntegerField(models.CharField):
 
     def to_python(self, value):
         return int(value)
+
+    

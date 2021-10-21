@@ -35,7 +35,30 @@ class BlockModelTest(TestCase):
         self.assertEqual(42, Block._meta.get_field('miner').max_length)
 
     def test_difficulty_uses_BiggerIntegerField(self):
-        self.assertIsInstance(Block._meta.get_field('difficulty'), BiggerIntegerField)
-        
+        self.assertIsInstance(Block._meta.get_field(
+            'difficulty'), BiggerIntegerField)
+
     def test_total_difficulty_uses_BiggerIntegerField(self):
-        self.assertIsInstance(Block._meta.get_field('total_difficulty'), BiggerIntegerField)
+        self.assertIsInstance(Block._meta.get_field(
+            'total_difficulty'), BiggerIntegerField)
+
+
+class TransactionModelTest(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.transaction = Transaction.objects.create(
+            block_hash='0x4e3a3754410177e6937ef1f84bba68ea139e8d1a2258c5f85db9f1cd715a1bdd',
+            block_number=46147,
+            from_address='0xA1E4380A3B1f749673E270229993eE55F35663b4',
+            gas=21000,
+            gas_price=None,
+            hash='0x5c504ed432cb51138bcf09aa5e8a410dd4a1e204ef84bfed1be16dfba1b22060',
+            input='0x',
+            max_fee_per_gas=2000000000,
+            max_priority_fee_per_gas=1000000000,
+            nonce=0,
+            to_address='0x5DF9B87991262F6BA471F09758CDE1c0FC1De734',
+            transaction_index=0,
+            value=31337,
+        )
