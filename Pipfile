@@ -8,6 +8,7 @@ django = "*"
 web3 = "*"
 coverage = "*"
 psycopg2 = "*"
+celery = "*"
 
 [dev-packages]
 

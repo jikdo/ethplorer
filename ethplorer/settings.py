@@ -131,6 +131,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 WEB3_PROVIDER = ''
 
 
+# celery
+
+
+
 try:
     from .local_settings import *
 except ImportError:
