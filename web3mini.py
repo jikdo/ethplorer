@@ -9,5 +9,11 @@ w3 = Web3(provider)
 print(w3.eth.get_block(1000000).hash.hex())
 
 
-tx = w3.eth.get_transaction('0x2539884855adef927de3e68ed3b3feb79dfdda70383accb11f1e95ff158eedf8')
-print(tx)
+# tx = w3.eth.get_transaction('0x2539884855adef927de3e68ed3b3feb79dfdda70383accb11f1e95ff158eedf8')
+# print(tx)
+
+print('private key')
+print(bool(w3.eth.get_code('0x24354D31bC9D90F62FE5f2454709C32049cf866b')))
+
+print('contract')
+print(bool(w3.eth.get_code('0x8798249c2E607446EfB7Ad49eC89dD1865Ff4272')))
