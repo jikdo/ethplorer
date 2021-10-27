@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -129,10 +130,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Web3 settings
 
 WEB3_PROVIDER = ''
-
+WEB3_STARTING_BLOCK = os.getenv('WEB3_STARTING_BLOCK', 0)
 
 # celery
-
+CELERY_BROKER_URL = ''
+CELERY_RESULTS = ''
 
 
 try:
