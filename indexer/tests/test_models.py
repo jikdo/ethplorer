@@ -33,6 +33,7 @@ class BlockModelTest(TestCase):
             timestamp=timezone.make_aware(datetime.fromtimestamp(1470173578)),
             total_difficulty=44010101827705409388,
             transactions_root='0xb31f174d27b99cdae8e746bd138a01ce60d8dd7b224f7c60845914def05ecc58',
+            transaction_count=100
         )
 
         cls.block_2 = Block.objects.create(
@@ -54,6 +55,7 @@ class BlockModelTest(TestCase):
                 datetime.fromtimestamp(1470173578)),
             total_difficulty=44010101827705409388,
             transactions_root='0xb31f174d27b99cdae8e746bd138a01ce60d8dd7b224f7c60845914def05ecc58',
+            transaction_count=100
         )
 
     def test_parent_block_field_is_block(self):
@@ -105,10 +107,11 @@ class TransactionModelTest(TestCase):
             timestamp=timezone.make_aware(datetime.fromtimestamp(1470173578)),
             total_difficulty=44010101827705409388,
             transactions_root='0xb31f174d27b99cdae8e746bd138a01ce60d8dd7b224f7c60845914def05ecc58',
+            transaction_count=100
         )
 
         cls.transaction = Transaction.objects.create(
-            block_hash=cls.block,
+            block=cls.block,
             from_address=cls.from_account,
             gas=21000,
             gas_price=None,

@@ -28,6 +28,7 @@ class Block(models.Model):
     timestamp = models.DateTimeField()
     total_difficulty = BiggerIntegerField()
     transactions_root = models.CharField(max_length=150)
+    transaction_count = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True,
                                    help_text='Date added to off-chain database')
 
