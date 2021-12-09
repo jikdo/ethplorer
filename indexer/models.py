@@ -33,7 +33,7 @@ class Block(models.Model):
                                    help_text='Date added to off-chain database')
 
     def __str__(self) -> str:
-        return self.hash
+        return f'{self.hash} {self.timestamp}'
 
 
 class Transaction(models.Model):
@@ -48,13 +48,13 @@ class Transaction(models.Model):
     gas = models.BigIntegerField()
     gas_price = models.BigIntegerField()
     input = models.CharField(max_length=150)
-    max_fee_per_gas = models.BigIntegerField()
-    max_priority_fee_per_gas = models.BigIntegerField()
+    # max_fee_per_gas = models.BigIntegerField()
+    # max_priority_fee_per_gas = models.BigIntegerField()
     nonce = models.IntegerField()
     to_address = models.ForeignKey(
         'Account', related_name='to_transactions', on_delete=models.CASCADE)
     transaction_index = models.IntegerField()
-    value = models.BigIntegerField()
+    value = BiggerIntegerField()
 
     def __str__(self) -> str:
         return self.hash

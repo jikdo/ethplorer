@@ -38,7 +38,8 @@ def index_blockchain(start_block_id):
 
         try:
 
-            logger.info('something is happening')
+            logger.info(f'something is happening: block {start_block}')
+
             block_response = w3.eth.get_block(
                 start_block, full_transactions=True)
 
@@ -53,45 +54,47 @@ def index_blockchain(start_block_id):
                 except Block.DoesNotExist:
                     return None
 
+           
+
             block = Block.objects.create(
-                hash=block_response.hash,
+                hash=Web3.toHex(block_response.hash),
                 parent_block=None if block_response.number == 0 else get_parent_block(
                     block_response.number - 1),
                 difficulty=block_response.difficulty,
-                extra_data=block_response.extra_data,
-                gas_limit=block_response.gas_limit,
-                gas_used=block_response.gas_used,
-                logs_bloom=block_response.logs_bloom,
+                extra_data=block_response.extraData,
+                gas_limit=block_response.gasLimit,
+                gas_used=block_response.gasUsed,
+                logs_bloom=block_response.logsBloom,
                 miner=miner,
-                nonce=block_response.nonce,
+                nonce=Web3.toHex(block_response.nonce),
                 number=block_response.number,
-                receipt_root=block_response.receipt_root,
-                sha3_uncles=block_response.sha3_uncles,
+                receipt_root=Web3.toHex(block_response.receiptsRoot),
+                sha3_uncles=Web3.toHex(block_response.sha3Uncles),
                 size=block_response.size,
-                state_root=block_response.state_root,
+                state_root=Web3.toHex(block_response.stateRoot),
                 timestamp=timezone.make_aware(
                     datetime.fromtimestamp(block_response.timestamp)),
-                total_difficulty=block_response.total_difficulty,
-                transactions_root=block_response.transactions_root,
+                total_difficulty=block_response.totalDifficulty,
+                transactions_root=Web3.toHex(block_response.transactionsRoot),
                 transaction_count=w3.eth.get_block_transaction_count(
                     block_response.number)
             )
 
             # save transactions
             for tx in block_response.transactions:
-
+                print(tx)
                 Transaction.objects.create(
-                    block_hash=block,
-                    from_address=create_account(tx.from_address, w3),
+                    block=block,
+                    from_address=create_account(tx['from'], w3),
                     gas=tx.gas,
-                    gas_price=tx.gas_price,
-                    hash=tx.hash,
+                    gas_price=tx.gasPrice,
+                    hash=Web3.toHex(tx.hash),
                     input=tx.input,
-                    max_fee_per_gas=tx.max_fee_per_gas,
-                    max_priority_fee_per_gas=tx.max_priority_fee_per_gas,
+                    # max_fee_per_gas=tx.maxFeePerGas,
+                    # max_priority_fee_per_gas=tx.maxPriorityFeePerGas,
                     nonce=tx.nonce,
-                    to_address=tx.to_address,
-                    transaction_index=tx.transaction_index,
+                    to_address=create_account(tx.to, w3),
+                    transaction_index=tx.transactionIndex,
                     value=tx.value,
                 )
 
@@ -99,6 +102,9 @@ def index_blockchain(start_block_id):
             start_block += 1
 
         except Exception as e:
-            traceback.print_exception(e)
-
-        break
+            print(e)
+            break
+        # wait for 15 mins
+        except w3.exceptions.BlockNotFound:
+            print('Block not found')
+            break
