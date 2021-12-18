@@ -9,7 +9,7 @@ class Block(models.Model):
     """
     Represents an ethereum block on the chain
     """
-    hash = models.CharField(max_length=150)
+    hash = models.CharField(max_length=500, unique=True)
     difficulty = BiggerIntegerField()
     extra_data = models.CharField(max_length=100)
     gas_limit = models.IntegerField()
@@ -17,17 +17,17 @@ class Block(models.Model):
     logs_bloom = models.TextField()
     miner = models.ForeignKey(
         'Account', related_name="mined_blocks", on_delete=models.CASCADE)
-    nonce = models.CharField(max_length=50)
+    nonce = models.CharField(max_length=200)
     number = models.BigIntegerField()
     parent_block = models.OneToOneField(
         'self', related_name="parent", null=True, on_delete=models.CASCADE)
-    receipt_root = models.CharField(max_length=150)
-    sha3_uncles = models.CharField(max_length=150)
+    receipt_root = models.CharField(max_length=500)
+    sha3_uncles = models.CharField(max_length=500)
     size = models.IntegerField()
-    state_root = models.CharField(max_length=150)
+    state_root = models.CharField(max_length=500)
     timestamp = models.DateTimeField()
     total_difficulty = BiggerIntegerField()
-    transactions_root = models.CharField(max_length=150)
+    transactions_root = models.CharField(max_length=500)
     transaction_count = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True,
                                    help_text='Date added to off-chain database')
@@ -40,14 +40,14 @@ class Transaction(models.Model):
     """
     Represents a transaction on the ethereum blockchian
     """
-    hash = models.CharField(max_length=150)
+    hash = models.CharField(max_length=500, unique=True)
     block = models.ForeignKey(
         Block, related_name='transactions', on_delete=models.CASCADE)
     from_address = models.ForeignKey(
         'Account', related_name='from_transactions', on_delete=models.CASCADE)
     gas = models.BigIntegerField()
     gas_price = models.BigIntegerField()
-    input = models.CharField(max_length=150)
+    input = models.TextField()
     # max_fee_per_gas = models.BigIntegerField()
     # max_priority_fee_per_gas = models.BigIntegerField()
     nonce = models.IntegerField()
@@ -70,7 +70,7 @@ class Account(models.Model):
 
     )
 
-    hash = models.CharField(max_length=42, help_text="account address")
+    hash = models.CharField(max_length=42, unique=True, help_text="account address")
     account_type = models.CharField(max_length=50)
 
     def __str__(self) -> str:
